@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'constants.dart';
+import 'package:pocket_apteka/screens/home/home_screen.dart';
 void main() {
   runApp(const App());
 }
@@ -10,11 +11,15 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Pocket apteka',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: kBackgroundColor,
+        primaryColor: kPrimaryColor,      
+        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextcolor),
+        visualDensity: VisualDensity.adaptivePlatformDensity
       ),
-      home: Scaffold(appBar: AppBar(backgroundColor: Colors.blue, title: Text("1233"),)),
+      home: HomeScreen()
     );
   }
 }
