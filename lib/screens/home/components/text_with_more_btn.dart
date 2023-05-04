@@ -42,7 +42,7 @@ class TextUnderline extends StatelessWidget {
             padding: EdgeInsets.all(kPaddingOffset / 4),
             child: Text(
               text,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
             )),
         Positioned(
             bottom: 0,
