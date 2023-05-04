@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pocket_apteka/constants.dart';
+import 'package:pocket_apteka/screens/add_medicament/add_medicament_screen.dart';
 
 class OwnBottomAppBar extends StatelessWidget {
   const OwnBottomAppBar({
@@ -44,7 +45,9 @@ class OwnBottomAppBar extends StatelessWidget {
               right: 0,
               child: IconButton(
                   iconSize: 100,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddMedicamentScreen(),));
+                  },
                   icon: Container(
                       padding: EdgeInsets.all(kPaddingOffset / 4),
                       decoration: BoxDecoration(
