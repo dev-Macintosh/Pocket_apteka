@@ -1,64 +1,133 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_apteka/constants.dart';
+import 'package:pocket_apteka/models/model.dart';
 import 'package:pocket_apteka/screens/details/details_screen.dart';
 
-class RecommendedMedicaments extends StatelessWidget {
-  const RecommendedMedicaments({
-    super.key,
-  });
+class RecommendedMedicaments extends StatefulWidget {
+  const RecommendedMedicaments({super.key});
+
+  @override
+  State<RecommendedMedicaments> createState() => _RecommendedMedicamentsState();
+}
+
+class _RecommendedMedicamentsState extends State<RecommendedMedicaments> {
+  List<Medicament> medicaments = [];
+
+  loadAllMedicaments() {
+    // medicaments = await Medicament().select().toList();
+    Medicament med = new Medicament();
+    med.imageSrc = "assets/images/medicament_3.jpg";
+    med.name = "Даниил";
+    med.price = "200";
+    med.country = "Россия";
+    medicaments.add(med);
+  }
+
+  @override
+  void initState() {
+    loadAllMedicaments();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    
+    List<RecommendedMedicament> buildMedicaments() {
+      List<RecommendedMedicament> medicamentsList = [];
+      for (var i = 0; i < medicaments.length; i++) {
+        medicamentsList.add(new RecommendedMedicament(
+          imageSrc: medicaments[i].imageSrc ?? "",
+          press: () => {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailScreen(
+                    imageSrc: "assets/images/medicament_1.jpg",
+                  ),
+                ))
+          },
+          price: medicaments[i].price,
+          name: medicaments[i].name,
+          country: medicaments[i].country,
+        ));
+      }
+      return medicamentsList;
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: IntrinsicHeight(
         child: Row(
-          children: [
-            RecommendedMedicament(
-              imageSrc: "assets/images/medicament_1.jpg",
-              press: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailScreen(imageSrc: "assets/images/medicament_1.jpg",),
-                    ))
-              },
-              price: "100",
-              name: "Даниил",
-              country: "Россия",
-            ),
-            RecommendedMedicament(
-              imageSrc: "assets/images/medicament_2.jpg",
-              press: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailScreen(imageSrc: "assets/images/medicament_2.jpg",),
-                    ))
-              },
-              price: "200",
-              name: "Иван",
-              country: "Индия",
-            ),
-            RecommendedMedicament(
-              imageSrc: "assets/images/medicament_3.jpg",
-              press: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailScreen(imageSrc: "assets/images/medicament_3.jpg",),
-                    ))
-              },
-              price: "300",
-              name: "Витя",
-              country: "США",
-            ),
-          ],
+          children: buildMedicaments()
         ),
       ),
     );
   }
 }
+
+// class RecommendedMedicaments extends StatelessWidget {
+//   const RecommendedMedicaments({
+//     super.key,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SingleChildScrollView(
+//       scrollDirection: Axis.horizontal,
+//       child: IntrinsicHeight(
+//         child: Row(
+//           children: [
+//             RecommendedMedicament(
+//               imageSrc: "assets/images/medicament_1.jpg",
+//               press: () => {
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => DetailScreen(
+//                         imageSrc: "assets/images/medicament_1.jpg",
+//                       ),
+//                     ))
+//               },
+//               price: "100",
+//               name: "Даниил",
+//               country: "Россия",
+//             ),
+// RecommendedMedicament(
+//   imageSrc: "assets/images/medicament_2.jpg",
+//   press: () => {
+//     Navigator.push(
+//         context,
+//         MaterialPageRoute(
+//           builder: (context) => DetailScreen(
+//             imageSrc: "assets/images/medicament_2.jpg",
+//           ),
+//         ))
+//   },
+//   price: "200",
+//   name: "Иван",
+//   country: "Индия",
+// ),
+//             RecommendedMedicament(
+//               imageSrc: "assets/images/medicament_3.jpg",
+//               press: () => {
+//                 Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                       builder: (context) => DetailScreen(
+//                         imageSrc: "assets/images/medicament_3.jpg",
+//                       ),
+//                     ))
+//               },
+//               price: "300",
+//               name: "Витя",
+//               country: "США",
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class RecommendedMedicament extends StatelessWidget {
   const RecommendedMedicament(
