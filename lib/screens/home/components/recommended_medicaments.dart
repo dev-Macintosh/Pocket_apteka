@@ -13,14 +13,11 @@ class RecommendedMedicaments extends StatefulWidget {
 class _RecommendedMedicamentsState extends State<RecommendedMedicaments> {
   List<Medicament> medicaments = [];
 
-  loadAllMedicaments() {
-    // medicaments = await Medicament().select().toList();
-    Medicament med = new Medicament();
-    med.imageSrc = "assets/images/medicament_3.jpg";
-    med.name = "Даниил";
-    med.price = "200";
-    med.country = "Россия";
-    medicaments.add(med);
+  loadAllMedicaments() async {
+    medicaments = await Medicament().select().toList();
+    setState(() {
+      
+    });
   }
 
   @override

@@ -17,12 +17,12 @@ class Body extends StatelessWidget {
       child: Column(children: <Widget>[
         HeaderWithSearchBox(size: size),
         TextWithMoreBtn(
-          title: "Рекомендованные лекарства",
+          title: "Ваши лекарства",
           press: () {},
         ),
         RecommendedMedicaments(),
         TextWithMoreBtn(
-          title: "Ваши лекарства",
+          title: "Рекомендованные лекарства",
           press: () {},
         ),
         OwnMedicaments(),
