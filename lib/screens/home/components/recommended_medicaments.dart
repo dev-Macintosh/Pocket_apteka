@@ -39,7 +39,10 @@ class _RecommendedMedicamentsState extends State<RecommendedMedicaments> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetailScreen(
-                    imageSrc: "assets/images/medicament_1.jpg",
+                    imageSrc: medicaments[i].imageSrc ?? "",
+                    price: medicaments[i].price ?? "",
+                    name:medicaments[i].name ?? "",
+                    country: medicaments[i].country ?? "",
                   ),
                 ))
           },
