@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:pocket_apteka/constants.dart';
 
 class Body extends StatelessWidget {
   Body({super.key});
@@ -8,9 +9,13 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Form(
+    return Container(
+      padding: const EdgeInsets.all(kPaddingOffset * 1.5),
+      height: size.height * 0.7,
+      child: Form(
         key: _formKey,
-        child: ListView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             TextFormField(
               validator: (value) {
@@ -18,42 +23,28 @@ class Body extends StatelessWidget {
               },
               decoration: InputDecoration(
                 labelText: 'Наименование препарата',
-                prefixIcon: Icon(Icons.person),
-                suffixIcon: Icon(
-                  Icons.delete_outline,
-                  color: Colors.red,
-                ),
+                border: OutlineInputBorder(),
                 hintText: "Препарат",
               ),
             ),
             TextFormField(
               validator: (value) {
-
                 return null;
               },
               decoration: InputDecoration(
                 labelText: 'Цена',
                 hintText: "100",
-                prefixIcon: Icon(Icons.date_range),
-                suffixIcon: Icon(
-                  Icons.delete_outline,
-                  color: Colors.red,
-                ),
+                border: OutlineInputBorder(),
               ),
             ),
             TextFormField(
               validator: (value) {
-
                 return null;
               },
               decoration: InputDecoration(
                 labelText: 'Страна',
                 hintText: "Россия",
-                prefixIcon: Icon(Icons.date_range),
-                suffixIcon: Icon(
-                  Icons.delete_outline,
-                  color: Colors.red,
-                ),
+                border: OutlineInputBorder(),
               ),
             ),
             TextButton(
@@ -62,10 +53,18 @@ class Body extends StatelessWidget {
                   Navigator.pop(context);
                 }
               },
-              child: Text("Submit"),
+              
+              child: Container(
+                width: size.width,
+                
+                padding: EdgeInsets.all(kPaddingOffset * 0.5),
+                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),color: Colors.white),
+                child: Text("Создать",textAlign: TextAlign.center,),
+              ),
             ),
           ],
         ),
-      );
+      ),
+    );
   }
 }
