@@ -20,7 +20,7 @@ class RecommendedMedicaments extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailScreen(),
+                      builder: (context) => DetailScreen(imageSrc: "assets/images/medicament_1.jpg",),
                     ))
               },
               price: "100",
@@ -33,7 +33,7 @@ class RecommendedMedicaments extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailScreen(),
+                      builder: (context) => DetailScreen(imageSrc: "assets/images/medicament_2.jpg",),
                     ))
               },
               price: "200",
@@ -46,7 +46,7 @@ class RecommendedMedicaments extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DetailScreen(),
+                      builder: (context) => DetailScreen(imageSrc: "assets/images/medicament_3.jpg",),
                     ))
               },
               price: "300",

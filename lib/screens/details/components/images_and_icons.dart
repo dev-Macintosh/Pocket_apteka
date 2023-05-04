@@ -9,8 +9,9 @@ class ImageAndIcons extends StatelessWidget {
   const ImageAndIcons({
     super.key,
     required this.size,
+    required this.imageSrc
   });
-
+  final String imageSrc;
   final Size size;
 
   @override
@@ -60,9 +61,9 @@ class ImageAndIcons extends StatelessWidget {
                   ),
                 ],
                 image: DecorationImage(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   fit: BoxFit.cover,
-                  image: AssetImage("assets/images/medicament_1.jpg"),
+                  image: AssetImage(imageSrc),
                 ),
               ),
             ),
