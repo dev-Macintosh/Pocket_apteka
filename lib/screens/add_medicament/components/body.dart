@@ -26,6 +26,7 @@ class Body extends StatelessWidget {
               validator: (value) {
                 return null;
               },
+              controller: nameController,
               decoration: InputDecoration(
                 labelText: 'Наименование препарата',
                 border: OutlineInputBorder(),
@@ -36,6 +37,7 @@ class Body extends StatelessWidget {
               validator: (value) {
                 return null;
               },
+              controller: priceController,
               decoration: InputDecoration(
                 labelText: 'Цена',
                 hintText: "100",
@@ -46,6 +48,7 @@ class Body extends StatelessWidget {
               validator: (value) {
                 return null;
               },
+              controller: countryController,
               decoration: InputDecoration(
                 labelText: 'Страна',
                 hintText: "Россия",
@@ -60,8 +63,8 @@ class Body extends StatelessWidget {
                   med.name = nameController.text;
                   med.price = priceController.text;
                   med.country = countryController.text;
-                  med.save();
-                  Navigator.pop(context);
+                  med.save(); 
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
                 }
               },
               child: Container(
