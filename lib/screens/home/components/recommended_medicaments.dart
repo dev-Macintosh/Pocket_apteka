@@ -81,21 +81,21 @@ class RecommendedMedicament extends StatelessWidget {
             bottom: kPaddingOffset * 2.25,
             top: kPaddingOffset / 2),
         width: size.width * 0.5,
-        child: Column(
-          children: [
-            Expanded(
-              child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10)),
-                  child: Image.asset(
-                    imageSrc,
-                    fit: BoxFit.cover,
-                  )),
-            ),
-            GestureDetector(
-              onTap: press,
-              child: Container(
+        child: GestureDetector(
+          onTap: press,
+          child: Column(
+            children: [
+              Expanded(
+                child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)),
+                    child: Image.asset(
+                      imageSrc,
+                      fit: BoxFit.cover,
+                    )),
+              ),
+              Container(
                 padding: EdgeInsets.all(kPaddingOffset / 1.5),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -125,8 +125,8 @@ class RecommendedMedicament extends StatelessWidget {
                   )
                 ]),
               ),
-            )
-          ],
+            ],
+          ),
         ));
   }
 }
