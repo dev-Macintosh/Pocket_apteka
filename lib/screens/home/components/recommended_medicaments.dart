@@ -57,11 +57,13 @@ class RecommendedMedicament extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-          margin: EdgeInsets.only(
-              left: kPaddingOffset,
-              bottom: kPaddingOffset * 2.25,
-              top: kPaddingOffset / 2),
-          width: size.width * 0.5,
+        margin: EdgeInsets.only(
+            left: kPaddingOffset,
+            bottom: kPaddingOffset * 2.25,
+            top: kPaddingOffset / 2),
+        width: size.width * 0.5,
+        child: GestureDetector(
+          onTap: press,
           child: Column(
             children: [
               Expanded(
@@ -74,40 +76,38 @@ class RecommendedMedicament extends StatelessWidget {
                       fit: BoxFit.cover,
                     )),
               ),
-              GestureDetector(
-                onTap: press,
-                child: Container(
-                  padding: EdgeInsets.all(kPaddingOffset / 1.5),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(10),
-                          bottomRight: Radius.circular(10)),
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: 50,
-                            offset: Offset(0, 10),
-                            color: kPrimaryColor.withOpacity(0.25))
-                      ]),
-                  child: Row(children: [
-                    RichText(
-                        text: TextSpan(children: [
-                      TextSpan(
-                          text: "$name\n".toUpperCase(),
-                          style: TextStyle(color: kPrimaryColor, fontSize: 14)),
-                      TextSpan(
-                          text: "$country".toUpperCase(),
-                          style: TextStyle(color: kPrimaryColor, fontSize: 11))
-                    ])),
-                    Spacer(),
-                    Text(
-                      "\$$price",
-                      style: TextStyle(color: Colors.black),
-                    )
-                  ]),
-                ),
-              )
+              Container(
+                padding: EdgeInsets.all(kPaddingOffset / 1.5),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 50,
+                          offset: Offset(0, 10),
+                          color: kPrimaryColor.withOpacity(0.25))
+                    ]),
+                child: Row(children: [
+                  RichText(
+                      text: TextSpan(children: [
+                    TextSpan(
+                        text: "$name\n".toUpperCase(),
+                        style: TextStyle(color: kPrimaryColor, fontSize: 14)),
+                    TextSpan(
+                        text: "$country".toUpperCase(),
+                        style: TextStyle(color: kPrimaryColor, fontSize: 11))
+                  ])),
+                  Spacer(),
+                  Text(
+                    "\$$price",
+                    style: TextStyle(color: Colors.black),
+                  )
+                ]),
+              ),
             ],
-          ));
+          ),
+        ));
   }
 }
