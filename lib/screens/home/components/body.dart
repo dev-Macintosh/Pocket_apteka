@@ -25,7 +25,8 @@ class Body extends StatelessWidget {
           title: "Ваши лекарства",
           press: () {},
         ),
-        OwnMedicaments()
+        OwnMedicaments(),
+        SizedBox(height: kPaddingOffset,)
       ]),
     );
   }
