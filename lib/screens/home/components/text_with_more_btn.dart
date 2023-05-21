@@ -13,18 +13,18 @@ class TextWithMoreBtn extends StatelessWidget {
       child: Row(
         children: [
           TextUnderline(text: title),
-          Spacer(),
-          TextButton(
-            onPressed: press,
-            child: Text(
-              "more",
-              style: TextStyle(color: kTextcolor),
-            ),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(kPrimaryColor),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)))),
-          ),
+          // Spacer(),
+          // TextButton(
+          //   onPressed: press,
+          //   child: Text(
+          //     "more",
+          //     style: TextStyle(color: kTextcolor),
+          //   ),
+          //   style: ButtonStyle(
+          //       backgroundColor: MaterialStateProperty.all(kPrimaryColor),
+          //       shape: MaterialStateProperty.all(RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(10)))),
+          // ),
         ],
       ),
     );

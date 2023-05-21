@@ -28,8 +28,11 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  path_provider: ^2.0.15  
   sqfentity: ^2.3.0+5
   sqfentity_gen: ^2.3.0+4
+  image_picker: ^0.8.7+5
+  path: 
   flutter:
     sdk: flutter
 

@@ -11,10 +11,9 @@ const tableMedicament = SqfEntityTable(
     tableName: 'medicaments',
     primaryKeyName: 'id',
     useSoftDeleting: false,
-    primaryKeyType: PrimaryKeyType.integer_unique,
+    primaryKeyType: PrimaryKeyType.integer_auto_incremental,
 
     fields: [
-      SqfEntityField('medicamentId', DbType.integer),
       SqfEntityField('imageSrc', DbType.text),
       SqfEntityField('name', DbType.text),
       SqfEntityField('country', DbType.text, defaultValue: 'Russia'),
@@ -26,8 +25,8 @@ const seqIdentity=SqfEntitySequence(
 );
 @SqfEntityBuilder(myDbModel)
 const myDbModel = SqfEntityModel(
-    modelName: 'AptekaDbModel', // optional
-    databaseName: 'apteka.db',
+    modelName: 'AptekaPocketDbModel', // optional
+    databaseName: 'aptekapocket.db',
     databaseTables: [tableMedicament],
     bundledDatabasePath: null,
     sequences: [seqIdentity]);

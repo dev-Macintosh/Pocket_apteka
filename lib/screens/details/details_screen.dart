@@ -10,12 +10,15 @@ class DetailScreen extends StatelessWidget {
       this.imageSrc = "",
       this.name = "",
       this.price = "",
-      this.country = ""});
+      this.country = "",
+      required this.id});
   final String imageSrc, price, name, country;
+  final int id;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Body(
+            id:id,
             imageSrc: imageSrc,
             name: this.name,
             price: this.price,

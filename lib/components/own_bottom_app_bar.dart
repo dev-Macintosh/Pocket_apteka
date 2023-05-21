@@ -28,19 +28,8 @@ class OwnBottomAppBar extends StatelessWidget {
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: SvgPicture.asset("assets/icons/pencil.svg")),
-              IconButton(
-                  onPressed: () {},
-                  icon: SvgPicture.asset("assets/icons/delete.svg"))
-            ],
-          ),
           Positioned(
-              top: -55,
+              top: -25,
               left: 0,
               right: 0,
               child: IconButton(

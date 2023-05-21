@@ -1,27 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:pocket_apteka/components/add_image.dart';
 import 'package:pocket_apteka/models/model.dart';
 import 'package:pocket_apteka/screens/home/home_screen.dart';
 import 'package:pocket_apteka/constants.dart';
+import 'dart:developer' as developer;
 
 class Body extends StatelessWidget {
-  Body({super.key});
+  Body(
+      {super.key, this.id, this.imageSrc, this.name, this.price, this.country});
+  final String? imageSrc, name, price, country;
+  final int? id;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
+  late TextEditingController nameController = TextEditingController(text: name);
+  late TextEditingController priceController =
+      TextEditingController(text: price);
+  late TextEditingController countryController =
+      TextEditingController(text: country);
+
+  late ImageController imageController = ImageController(image:  imageSrc);
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.all(kPaddingOffset * 1.5),
-      height: size.height * 0.7,
+      height: size.height,
       child: Form(
         key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            addImage(
+              controller: imageController,
+            ),
             TextFormField(
               validator: (value) {
                 return null;
@@ -58,13 +70,38 @@ class Body extends StatelessWidget {
             TextButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  Medicament med = new Medicament();
-                  med.imageSrc = "assets/images/medicament_3.jpg";
-                  med.name = nameController.text;
-                  med.price = priceController.text;
-                  med.country = countryController.text;
-                  med.save(); 
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
+                  developer.log(id.toString());
+                  switch (id) {
+                    case null:
+                      Medicament med = new Medicament();
+                      med.imageSrc = imageController.image;
+                      med.name = nameController.text != ""
+                          ? nameController.text
+                          : "НЕТ НАЗВАНИЯ";
+                      med.price = priceController.text != ""
+                          ? priceController.text
+                          : "0 рублей";
+                      med.country = countryController.text != ""
+                          ? countryController.text
+                          : "Нет страны";
+
+                      med.save();
+                      break;
+                    default:
+                      Medicament().select().id.equals(id).update({
+                        "name": nameController.text,
+                        "country": countryController.text,
+                        "price": priceController.text,
+                        "imageSrc":imageController.image
+                      });
+                      break;
+                  }
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreen(),
+                      ));
                 }
               },
               child: Container(
@@ -74,7 +111,7 @@ class Body extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     color: Colors.white),
                 child: Text(
-                  "Создать",
+                  "Создать/Редактировать",
                   textAlign: TextAlign.center,
                 ),
               ),

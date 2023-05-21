@@ -27,13 +27,12 @@ class TableMedicament extends SqfEntityTableBase {
     // declare properties of EntityTable
     tableName = 'medicaments';
     primaryKeyName = 'id';
-    primaryKeyType = PrimaryKeyType.integer_unique;
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
     // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
 
     // declare fields
     fields = [
-      SqfEntityFieldBase('medicamentId', DbType.integer),
       SqfEntityFieldBase('imageSrc', DbType.text),
       SqfEntityFieldBase('name', DbType.text),
       SqfEntityFieldBase('country', DbType.text, defaultValue: 'Russia'),
@@ -69,8 +68,8 @@ class SequenceIdentitySequence extends SqfEntitySequenceBase {
 // END SEQUENCES
 
 // BEGIN DATABASE MODEL
-class AptekaDbModel extends SqfEntityModelProvider {
-  AptekaDbModel() {
+class AptekaPocketDbModel extends SqfEntityModelProvider {
+  AptekaPocketDbModel() {
     databaseName = myDbModel.databaseName;
     password = myDbModel.password;
     dbVersion = myDbModel.dbVersion;
@@ -99,22 +98,15 @@ class AptekaDbModel extends SqfEntityModelProvider {
 // BEGIN ENTITIES
 // region Medicament
 class Medicament extends TableBase {
-  Medicament(
-      {this.id,
-      this.medicamentId,
-      this.imageSrc,
-      this.name,
-      this.country,
-      this.price}) {
+  Medicament({this.id, this.imageSrc, this.name, this.country, this.price}) {
     _setDefaultValues();
     softDeleteActivated = false;
   }
-  Medicament.withFields(this.id, this.medicamentId, this.imageSrc, this.name,
-      this.country, this.price) {
+  Medicament.withFields(this.imageSrc, this.name, this.country, this.price) {
     _setDefaultValues();
   }
-  Medicament.withId(this.id, this.medicamentId, this.imageSrc, this.name,
-      this.country, this.price) {
+  Medicament.withId(
+      this.id, this.imageSrc, this.name, this.country, this.price) {
     _setDefaultValues();
   }
   // fromMap v2.0
@@ -123,9 +115,6 @@ class Medicament extends TableBase {
       _setDefaultValues();
     }
     id = int.tryParse(o['id'].toString());
-    if (o['medicamentId'] != null) {
-      medicamentId = int.tryParse(o['medicamentId'].toString());
-    }
     if (o['imageSrc'] != null) {
       imageSrc = o['imageSrc'].toString();
     }
@@ -138,17 +127,14 @@ class Medicament extends TableBase {
     if (o['price'] != null) {
       price = o['price'].toString();
     }
-
-    isSaved = true;
   }
   // FIELDS (Medicament)
   int? id;
-  int? medicamentId;
   String? imageSrc;
   String? name;
   String? country;
   String? price;
-  bool? isSaved;
+
   // end FIELDS (Medicament)
 
   static const bool _softDeleteActivated = false;
@@ -164,9 +150,6 @@ class Medicament extends TableBase {
       {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
     map['id'] = id;
-    if (medicamentId != null || !forView) {
-      map['medicamentId'] = medicamentId;
-    }
     if (imageSrc != null || !forView) {
       map['imageSrc'] = imageSrc;
     }
@@ -190,9 +173,6 @@ class Medicament extends TableBase {
       bool forView = false]) async {
     final map = <String, dynamic>{};
     map['id'] = id;
-    if (medicamentId != null || !forView) {
-      map['medicamentId'] = medicamentId;
-    }
     if (imageSrc != null || !forView) {
       map['imageSrc'] = imageSrc;
     }
@@ -223,12 +203,12 @@ class Medicament extends TableBase {
 
   @override
   List<dynamic> toArgs() {
-    return [id, medicamentId, imageSrc, name, country, price];
+    return [imageSrc, name, country, price];
   }
 
   @override
   List<dynamic> toArgsWithIds() {
-    return [id, medicamentId, imageSrc, name, country, price];
+    return [id, imageSrc, name, country, price];
   }
 
   static Future<List<Medicament>?> fromWebUrl(Uri uri,
@@ -311,11 +291,8 @@ class Medicament extends TableBase {
   /// <returns>Returns id
   @override
   Future<int?> save({bool ignoreBatch = true}) async {
-    if (id == null || id == 0 || !isSaved!) {
-      await _mnMedicament.insert(this, ignoreBatch);
-      if (saveResult!.success) {
-        isSaved = true;
-      }
+    if (id == null || id == 0) {
+      id = await _mnMedicament.insert(this, ignoreBatch);
     } else {
       await _mnMedicament.update(this);
     }
@@ -328,11 +305,9 @@ class Medicament extends TableBase {
   /// <returns>Returns id
   @override
   Future<int?> saveOrThrow({bool ignoreBatch = true}) async {
-    if (id == null || id == 0 || !isSaved!) {
-      await _mnMedicament.insertOrThrow(this, ignoreBatch);
-      if (saveResult != null && saveResult!.success) {
-        isSaved = true;
-      }
+    if (id == null || id == 0) {
+      id = await _mnMedicament.insertOrThrow(this, ignoreBatch);
+
       isInsert = true;
     } else {
       // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
@@ -342,21 +317,36 @@ class Medicament extends TableBase {
     return id;
   }
 
+  /// saveAs Medicament. Returns a new Primary Key value of Medicament
+
+  /// <returns>Returns a new Primary Key value of Medicament
+  @override
+  Future<int?> saveAs({bool ignoreBatch = true}) async {
+    id = null;
+
+    return save(ignoreBatch: ignoreBatch);
+  }
+
   /// saveAll method saves the sent List<Medicament> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(List<Medicament> medicaments,
       {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
-    final isStartedBatch = await AptekaDbModel().batchStart();
+    final isStartedBatch = await AptekaPocketDbModel().batchStart();
     for (final obj in medicaments) {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await AptekaDbModel().batchCommit(
+      result = await AptekaPocketDbModel().batchCommit(
           exclusive: exclusive,
           noResult: noResult,
           continueOnError: continueOnError);
+      for (int i = 0; i < medicaments.length; i++) {
+        if (medicaments[i].id == null) {
+          medicaments[i].id = result![i] as int;
+        }
+      }
     }
     return result!;
   }
@@ -367,8 +357,8 @@ class Medicament extends TableBase {
   Future<int?> upsert({bool ignoreBatch = true}) async {
     try {
       final result = await _mnMedicament.rawInsert(
-          'INSERT OR REPLACE INTO medicaments (id, medicamentId, imageSrc, name, country, price)  VALUES (?,?,?,?,?,?)',
-          [id, medicamentId, imageSrc, name, country, price],
+          'INSERT OR REPLACE INTO medicaments (id, imageSrc, name, country, price)  VALUES (?,?,?,?,?)',
+          [id, imageSrc, name, country, price],
           ignoreBatch);
       if (result! > 0) {
         saveResult = BoolResult(
@@ -394,7 +384,7 @@ class Medicament extends TableBase {
   Future<BoolCommitResult> upsertAll(List<Medicament> medicaments,
       {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnMedicament.rawInsertAll(
-        'INSERT OR REPLACE INTO medicaments (id, medicamentId, imageSrc, name, country, price)  VALUES (?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO medicaments (id, imageSrc, name, country, price)  VALUES (?,?,?,?,?)',
         medicaments,
         exclusive: exclusive,
         noResult: noResult,
@@ -442,7 +432,6 @@ class Medicament extends TableBase {
   }
 
   void _setDefaultValues() {
-    isSaved = false;
     country = country ?? 'Russia';
   }
 
@@ -655,12 +644,6 @@ class MedicamentFilterBuilder extends ConjunctionBase {
   MedicamentField? _id;
   MedicamentField get id {
     return _id = _setField(_id, 'id', DbType.integer);
-  }
-
-  MedicamentField? _medicamentId;
-  MedicamentField get medicamentId {
-    return _medicamentId =
-        _setField(_medicamentId, 'medicamentId', DbType.integer);
   }
 
   MedicamentField? _imageSrc;
@@ -908,12 +891,6 @@ class MedicamentFields {
     return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
   }
 
-  static TableField? _fMedicamentId;
-  static TableField get medicamentId {
-    return _fMedicamentId = _fMedicamentId ??
-        SqlSyntax.setField(_fMedicamentId, 'medicamentId', DbType.integer);
-  }
-
   static TableField? _fImageSrc;
   static TableField get imageSrc {
     return _fImageSrc =
@@ -942,7 +919,7 @@ class MedicamentFields {
 //region MedicamentManager
 class MedicamentManager extends SqfEntityProvider {
   MedicamentManager()
-      : super(AptekaDbModel(),
+      : super(AptekaPocketDbModel(),
             tableName: _tableName,
             primaryKeyList: _primaryKeyList,
             whereStr: _whereStr);
@@ -957,7 +934,7 @@ class IdentitySequence {
   /// Assigns a new value when it is triggered and returns the new value
   /// returns Future<int>
   Future<int> nextVal([VoidCallback Function(int o)? nextval]) async {
-    final val = await AptekaDbModelSequenceManager()
+    final val = await AptekaPocketDbModelSequenceManager()
         .sequence(SequenceIdentitySequence.getInstance, true);
     if (nextval != null) {
       nextval(val);
@@ -968,7 +945,7 @@ class IdentitySequence {
   /// Get the current value
   /// returns Future<int>
   Future<int> currentVal([VoidCallback Function(int o)? currentval]) async {
-    final val = await AptekaDbModelSequenceManager()
+    final val = await AptekaPocketDbModelSequenceManager()
         .sequence(SequenceIdentitySequence.getInstance, false);
     if (currentval != null) {
       currentval(val);
@@ -979,7 +956,7 @@ class IdentitySequence {
   /// Reset sequence to start value
   /// returns start value
   Future<int> reset([VoidCallback Function(int o)? currentval]) async {
-    final val = await AptekaDbModelSequenceManager()
+    final val = await AptekaPocketDbModelSequenceManager()
         .sequence(SequenceIdentitySequence.getInstance, false, reset: true);
     if (currentval != null) {
       currentval(val);
@@ -990,7 +967,7 @@ class IdentitySequence {
 
 /// End Region SEQUENCE IdentitySequence
 
-class AptekaDbModelSequenceManager extends SqfEntityProvider {
-  AptekaDbModelSequenceManager() : super(AptekaDbModel());
+class AptekaPocketDbModelSequenceManager extends SqfEntityProvider {
+  AptekaPocketDbModelSequenceManager() : super(AptekaPocketDbModel());
 }
 // END OF ENTITIES

@@ -44,43 +44,6 @@ class HeaderWithSearchBox extends StatelessWidget {
             ],
           ),
         ),
-        Positioned(
-            bottom: 0,
-            right: 0,
-            left: 0,
-            child: Container(
-                height: 56,
-                margin: EdgeInsets.symmetric(horizontal: kPaddingOffset),
-                padding: EdgeInsets.symmetric(horizontal: kPaddingOffset),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                    boxShadow: [
-                      BoxShadow(
-                          offset: Offset(0, 10),
-                          color: Colors.black.withOpacity(0.5),
-                          blurRadius: 50.0)
-                    ]),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        onChanged: (value) => {},
-                        style: TextStyle(color: kPrimaryColor),
-                        decoration: InputDecoration(
-                            hintText: "Введите название препарата",
-                            hintStyle: TextStyle(
-                                color: kPrimaryColor.withOpacity(0.5)),
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none),
-                      ),
-                    ),
-                    Image.asset(
-                      "assets/images/search.png",
-                      height: 30,
-                    )
-                  ],
-                )))
       ]),
     );
   }

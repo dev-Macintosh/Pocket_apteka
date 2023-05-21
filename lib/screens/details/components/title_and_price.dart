@@ -25,20 +25,23 @@ class TitleAndPrice extends StatelessWidget {
                   text: "$title\n",
                   style: TextStyle(color: kTextcolor, fontWeight: FontWeight.bold),
                 ),
-                TextSpan(
+                 TextSpan(
                   text: country,
                   style: TextStyle(
+                    overflow:TextOverflow.clip,
                     fontSize: 20,
                     color: kPrimaryColor,
                     fontWeight: FontWeight.w300,
+                    
                   ),
+                  
                 ),
               ],
             ),
           ),
           Spacer(),
           Text(
-            "\$$price",
+            "$price",
             style: TextStyle(color: kPrimaryColor),
           )
         ],

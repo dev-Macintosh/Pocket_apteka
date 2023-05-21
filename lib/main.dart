@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
+import 'dart:io';
 import 'package:pocket_apteka/screens/home/home_screen.dart';
+import 'package:image_picker/image_picker.dart';
 void main() {
   runApp(const App());
 }

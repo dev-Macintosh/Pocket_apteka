@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:pocket_apteka/constants.dart';
 import 'package:pocket_apteka/models/model.dart';
@@ -14,9 +16,9 @@ class _RecommendedMedicamentsState extends State<RecommendedMedicaments> {
   List<Medicament> medicaments = [];
 
   loadAllMedicaments() async {
-    medicaments = await Medicament().select().toList();
+    final medicamentsDB = await Medicament().select().toList();
     setState(() {
-      
+      medicaments = medicamentsDB;
     });
   }
 
@@ -28,10 +30,10 @@ class _RecommendedMedicamentsState extends State<RecommendedMedicaments> {
 
   @override
   Widget build(BuildContext context) {
-    
     List<RecommendedMedicament> buildMedicaments() {
       List<RecommendedMedicament> medicamentsList = [];
       for (var i = 0; i < medicaments.length; i++) {
+        developer.log(medicaments[i].id.toString());
         medicamentsList.add(new RecommendedMedicament(
           imageSrc: medicaments[i].imageSrc ?? "",
           press: () => {
@@ -39,12 +41,13 @@ class _RecommendedMedicamentsState extends State<RecommendedMedicaments> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetailScreen(
+                    id: medicaments[i].id ?? 100,
                     imageSrc: medicaments[i].imageSrc ?? "",
                     price: medicaments[i].price ?? "",
-                    name:medicaments[i].name ?? "",
+                    name: medicaments[i].name ?? "",
                     country: medicaments[i].country ?? "",
                   ),
-                ))
+                )).then((value) => loadAllMedicaments())
           },
           price: medicaments[i].price,
           name: medicaments[i].name,
@@ -57,9 +60,7 @@ class _RecommendedMedicamentsState extends State<RecommendedMedicaments> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: IntrinsicHeight(
-        child: Row(
-          children: buildMedicaments()
-        ),
+        child: Row(children: buildMedicaments()),
       ),
     );
   }
@@ -132,7 +133,7 @@ class _RecommendedMedicamentsState extends State<RecommendedMedicaments> {
 class RecommendedMedicament extends StatelessWidget {
   const RecommendedMedicament(
       {super.key,
-      this.imageSrc = "",
+      required this.imageSrc,
       this.press,
       this.price,
       this.name,
@@ -159,10 +160,12 @@ class RecommendedMedicament extends StatelessWidget {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10)),
-                    child: Image.asset(
-                      imageSrc,
-                      fit: BoxFit.cover,
-                    )),
+                    child: imageSrc != ""
+                        ? Image.file(
+                            new File(imageSrc),
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset("assets/images/no-medicament.jpg",fit: BoxFit.cover,)),
               ),
               Container(
                 padding: EdgeInsets.all(kPaddingOffset / 1.5),
@@ -189,7 +192,7 @@ class RecommendedMedicament extends StatelessWidget {
                   ])),
                   Spacer(),
                   Text(
-                    "\$$price",
+                    "$price",
                     style: TextStyle(color: Colors.black),
                   )
                 ]),
